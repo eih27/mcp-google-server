@@ -1,6 +1,6 @@
 # Gmail & Calendar MCP Server
 
-An MCP server exposing two read-only tools over SSE:
+An MCP server exposing two read-only tools over Streamable HTTP:
 
 - **`read_gmail`** — fetch recent Gmail messages, optionally filtered by sender
 - **`read_calendar_events`** — fetch upcoming Google Calendar events
@@ -13,7 +13,7 @@ Designed for local development and MCP Inspector testing.
 
 - Google OAuth 2.0 login flow (browser-based)
 - In-memory session store (session_id returned after login, used as tool argument)
-- SSE transport compatible with MCP Inspector
+- Streamable HTTP transport compatible with MCP Inspector
 - FastAPI serving auth routes and MCP on the same port
 - No Docker, no database, no background processes
 
@@ -233,7 +233,7 @@ With time range:
 → This is handled automatically when the redirect URI starts with `http://`. If you see it anyway, set `export OAUTHLIB_INSECURE_TRANSPORT=1` in your shell before running.
 
 **MCP Inspector says "connection refused"**
-→ Make sure the server is running (`uv run python main.py`) and you're connecting to `http://localhost:8000/sse` not `https://`.
+→ Make sure the server is running (`uv run python main.py`) and you're connecting to `[http://localhost:8000/sse](http://localhost:8000/mcp)` not `https://`.
 
 **Session ID not working**
 → Sessions are in-memory. If the server restarted, your session ID is gone. Re-authenticate via `/auth/google/login`.
@@ -271,7 +271,7 @@ With time range:
 
 ```
 mcp_google_server/
-├── main.py           FastAPI app + MCP SSE transport wiring
+├── main.py           FastAPI app + MCP Streamable HTTP transport wiring
 ├── config.py         Settings from env vars (pydantic-settings)
 ├── session_store.py  In-memory credential store
 ├── auth.py           Google OAuth 2.0 routes
